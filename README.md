@@ -45,36 +45,24 @@ repo init -u https://github.com/LineageOS/android.git -b lineage-23.2 --git-lfs
 | `android_kernel_meizu_sm8550-modules` | `kernel/meizu/sm8550-modules` |
 | `android_kernel_meizu_sm8550-devicetrees` | `kernel/meizu/sm8550-devicetrees` |
 | `android_device_meizu_m2468` | `device/meizu/m2468` |
-| AOSP `platform/prebuilts/clang/host/linux-x86` | `prebuilts/clang/host/linux-x86-kernel` |
 
-前四个仓库的开发分支均为 `lineage-23.2`。`pinned.xml` 固定一次发布的四个源码提交和编译器提交；`revisions.lock.json` 记录同一组值。`local_manifest.xml` 跟随四仓分支最新提交，仍固定编译器。需要跟进开发分支时，将下载 URL 中的 `pinned.xml` 改为 `local_manifest.xml`，安装到**同一个**本地清单文件；不要同时安装两份。
+前四个仓库的开发分支均为 `lineage-23.2`。`pinned.xml` 固定一次发布的四个源码提交；`revisions.lock.json` 记录同一组值。`local_manifest.xml` 跟随四仓分支最新提交，编译器由ROM主清单提供。需要跟进开发分支时，将下载 URL 中的 `pinned.xml` 改为 `local_manifest.xml`，安装到**同一个**本地清单文件；不要同时安装两份。
 
 清单按精确 `path` 替换表中项目，同时移除旧 `device/meizu/m2468-kernel` 预编译项目的 manifest 声明。`optional="true"` 允许这些旧项目不存在；同名但不同路径的项目不受影响。保留 `vendor/meizu/m2468`、其它设备项目和 ROM 默认的 `prebuilts/clang/host/linux-x86`。
 
 Repo 按文件名字母顺序读取 `.repo/local_manifests/*.xml`。本清单应放在其它声明这些相同路径的本地清单之后；后续文件若再次声明相同路径，会报 duplicate path，应只调整冲突条目。清单移除的是项目声明，随后普通 `repo sync` 可能清理退出清单的旧 checkout；有本地修改时先在原仓库保存提交或备份。本流程不使用 `--force-sync`、`--force-remove-dirty` 或删除工作目录的命令。
 
-这些行为已对照 [Repo 官方 manifest 格式](https://gerrit.googlesource.com/git-repo/+/7bba4ee47e72ccfe7838b62869029e2f7436ce39/docs/manifest-format.md) 和实际解析器验证：缺少旧项目、存在旧项目、相同项目名位于其它路径、ROM 默认 Clang 与内核 Clang 并存。
+这些行为已对照 [Repo 官方 manifest 格式](https://gerrit.googlesource.com/git-repo/+/7bba4ee47e72ccfe7838b62869029e2f7436ce39/docs/manifest-format.md) 和实际解析器验证：缺少旧项目、存在旧项目、相同项目名位于其它路径、ROM 默认 Clang 保留、旧独立 Clang 项目取消。
 
 ## 版本和工具链
 
 ROM 构建规则以官方 **LineageOS 23.2** 为基准。内核源码基线来自 LineageOS SM8550 的 **`lineage-21` / Android 13 / Linux 5.15.211 / KMI generation 8**；仓库的发布分支名不代表内核已升级到与 ROM 同代的 Android 内核。上游提交和已核对的 ROM 构建规则提交见 [upstream.lock.json](upstream.lock.json)。
 
-内核编译器固定为 AOSP `clang-r450784e`，所在仓库提交：
+内核编译器使用 LineageOS 平台默认选择。设备树不设置 `TARGET_KERNEL_CLANG_VERSION` 或 `TARGET_KERNEL_CLANG_PATH`，官方规则使用 `LLVM_AOSP_PREBUILTS_VERSION` 与 ROM 自带的 `prebuilts/clang/host/linux-x86`。
 
-```text
-9f759dee5cdc5f85d076c642a192f6a9232f7058
-```
+本清单不拉取额外 Clang 仓库。保留旧 `prebuilts/clang/host/linux-x86-kernel` 路径的可选 `remove-project`，仅取消旧独立项目声明，不替换 ROM 默认工具链，也不运行本地目录删除命令。
 
-设备配置通过以下字段使用独立 checkout：
-
-```make
-TARGET_KERNEL_CLANG_VERSION := r450784e
-TARGET_KERNEL_CLANG_PATH := $(abspath prebuilts/clang/host/linux-x86-kernel/clang-r450784e)
-```
-
-这样不会替换编译 ROM 用户空间的默认 Clang。AOSP 仓库是工具链，清单不引用预编译的 M2468 内核、DTB、DTBO 或 `.ko`。
-
-`pinned.xml` 仅锁定上述五个项目，不锁定整个 LineageOS 平台或服务器已有 vendor。需要记录一次服务器完整构建输入，可在同步后运行：
+`pinned.xml` 仅锁定上述四个源码项目，不锁定整个 LineageOS 平台或服务器已有 vendor。需要记录一次服务器完整构建输入，可在同步后运行：
 
 ```bash
 repo manifest -r -o m2468-build-manifest.xml

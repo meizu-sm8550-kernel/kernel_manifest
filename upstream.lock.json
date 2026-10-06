@@ -44,14 +44,6 @@
     "url": "https://cnb.cool/AstralSpun/android_device_meizu_m2468",
     "commit": "b82127689b3f7aa7a09c51b3af8b8a3140eeaa17"
   },
-  "kernel_clang": {
-    "url": "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86",
-    "commit": "9f759dee5cdc5f85d076c642a192f6a9232f7058",
-    "subdir": "clang-r450784e",
-    "tree": "0fa3cd27f61cc798aa9553b856ec89b36316efb6",
-    "archive_url": "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/9f759dee5cdc5f85d076c642a192f6a9232f7058/clang-r450784e.tar.gz",
-    "archive_sha256": "bdcaee704749f9aae8c88f715f5ca0e9a0d4e0dc306a4721609e87b5c106a251"
-  },
   "validation": {
     "local_source_modules": 385,
     "module_hard_dependency_edges": 597,
@@ -61,5 +53,6 @@
     "first_device_boot_verified": false,
     "repo_parser_commit": "7bba4ee47e72ccfe7838b62869029e2f7436ce39",
     "repo_parser_url": "https://gerrit.googlesource.com/git-repo"
-  }
+  },
+  "clang_selection": "LineageOS platform default; no device override or additional compiler project"
 }

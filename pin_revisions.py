@@ -81,7 +81,7 @@ def main():
     lock = {
         "schema_version": 1,
         "lineageos_branch": BRANCH,
-        "scope": "Four M2468 source projects and the kernel Clang only; the rest of the ROM is not pinned.",
+        "scope": "Four M2468 source projects only; the rest of the ROM is not pinned.",
         "projects": records,
     }
     (ROOT / "revisions.lock.json").write_text(json.dumps(lock, indent=2) + "\n")
