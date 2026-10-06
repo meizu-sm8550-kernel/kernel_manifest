@@ -11,7 +11,6 @@ import xml.etree.ElementTree as ET
 
 
 ROOT = Path(__file__).resolve().parent
-CLANG = "9f759dee5cdc5f85d076c642a192f6a9232f7058"
 SOURCE_PATHS = {
     "device/meizu/m2468": "android_device_meizu_m2468",
     "kernel/meizu/sm8550": "android_kernel_meizu_sm8550",
@@ -46,8 +45,7 @@ def check_overlay(path, manifest_xml):
     assert not overlay.findall("default"), "do not override the platform default"
     assert not overlay.findall("include"), "overlay must work as one downloaded XML file"
     expected = {p.get("path"): p for p in overlay.findall("project")}
-    assert set(expected) == set(SOURCE_PATHS) | {CLANG_PATH}
-    assert expected[CLANG_PATH].get("revision") == CLANG
+    assert set(expected) == set(SOURCE_PATHS)
 
     for scenario in ("no_old_projects", "old_main_projects", "old_local_projects"):
         with tempfile.TemporaryDirectory(dir=ROOT / ".verification", prefix="parse-") as temporary:
@@ -82,9 +80,7 @@ def check_overlay(path, manifest_xml):
                 actual = projects[project_path]
                 assert actual.name == node.get("name")
                 assert actual.revisionExpr == node.get("revision")
-            assert projects[CLANG_PATH].remote.url == (
-                "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86"
-            )
+            assert CLANG_PATH not in projects
             for source_path, name in SOURCE_PATHS.items():
                 assert projects[source_path].remote.url == (
                     "https://github.com/meizu-sm8550-kernel/" + name
