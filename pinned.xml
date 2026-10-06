@@ -11,6 +11,6 @@
   <remove-project path="prebuilts/clang/host/linux-x86-kernel" optional="true" />
   <project name="android_device_meizu_m2468" path="device/meizu/m2468" remote="meizu-sm8550-kernel" revision="3cb2c799bd0b1dbb63e37dbbfb736e69e81c984a" upstream="refs/heads/lineage-23.2" dest-branch="lineage-23.2" />
   <project name="android_kernel_meizu_sm8550" path="kernel/meizu/sm8550" remote="meizu-sm8550-kernel" revision="abb0bb1a1053a5dbf22d911ca8a8178bf0e1e7e9" upstream="refs/heads/lineage-23.2" dest-branch="lineage-23.2" />
-  <project name="android_kernel_meizu_sm8550-modules" path="kernel/meizu/sm8550-modules" remote="meizu-sm8550-kernel" revision="80e945ff9d8433046ede4203b2c76fddca037de4" upstream="refs/heads/lineage-23.2" dest-branch="lineage-23.2" />
+  <project name="android_kernel_meizu_sm8550-modules" path="kernel/meizu/sm8550-modules" remote="meizu-sm8550-kernel" revision="97ed11c26cde8dd8f6c4b8d8ed1e698ebaa65a82" upstream="refs/heads/lineage-23.2" dest-branch="lineage-23.2" />
   <project name="android_kernel_meizu_sm8550-devicetrees" path="kernel/meizu/sm8550-devicetrees" remote="meizu-sm8550-kernel" revision="b3515f39ba10d50a9bb33ae2fc7519ad16c57191" upstream="refs/heads/lineage-23.2" dest-branch="lineage-23.2" />
 </manifest>
