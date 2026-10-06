@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "lineageos_branch": "lineage-23.2",
+  "scope": "Four M2468 source projects and the kernel Clang only; the rest of the ROM is not pinned.",
+  "projects": [
+    {
+      "name": "android_device_meizu_m2468",
+      "path": "device/meizu/m2468",
+      "url": "https://github.com/meizu-sm8550-kernel/android_device_meizu_m2468",
+      "commit": "31a45149d5473d2a8a495bf8ed3704852b69a6a7",
+      "branch": "lineage-23.2"
+    },
+    {
+      "name": "android_kernel_meizu_sm8550",
+      "path": "kernel/meizu/sm8550",
+      "url": "https://github.com/meizu-sm8550-kernel/android_kernel_meizu_sm8550",
+      "commit": "c6f8ec5aa466ae062ce4b94dbd8af00a60c83cb1",
+      "branch": "lineage-23.2"
+    },
+    {
+      "name": "android_kernel_meizu_sm8550-modules",
+      "path": "kernel/meizu/sm8550-modules",
+      "url": "https://github.com/meizu-sm8550-kernel/android_kernel_meizu_sm8550-modules",
+      "commit": "afd79f64bba718c55ea00a6b4af88ca18062b9fb",
+      "branch": "lineage-23.2"
+    },
+    {
+      "name": "android_kernel_meizu_sm8550-devicetrees",
+      "path": "kernel/meizu/sm8550-devicetrees",
+      "url": "https://github.com/meizu-sm8550-kernel/android_kernel_meizu_sm8550-devicetrees",
+      "commit": "e9fde834f4c89c37408f215956239e849b330ba9",
+      "branch": "lineage-23.2"
+    },
+    {
+      "name": "platform/prebuilts/clang/host/linux-x86",
+      "path": "prebuilts/clang/host/linux-x86-kernel",
+      "url": "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86",
+      "commit": "9f759dee5cdc5f85d076c642a192f6a9232f7058"
+    }
+  ]
+}

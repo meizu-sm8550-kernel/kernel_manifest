@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Overlay for an existing official LineageOS lineage-23.2 checkout. -->
+<manifest>
+  <remote name="meizu-sm8550-kernel" fetch="https://github.com/meizu-sm8550-kernel/" />
+  <remote name="meizu-kernel-aosp" fetch="https://android.googlesource.com/" />
+
+  <!-- Exact paths only: projects with the same names elsewhere are retained. -->
+  <remove-project path="device/meizu/m2468" optional="true" />
+  <remove-project path="device/meizu/m2468-kernel" optional="true" />
+  <remove-project path="kernel/meizu/sm8550" optional="true" />
+  <remove-project path="kernel/meizu/sm8550-modules" optional="true" />
+  <remove-project path="kernel/meizu/sm8550-devicetrees" optional="true" />
+  <remove-project path="prebuilts/clang/host/linux-x86-kernel" optional="true" />
+
+  <project name="android_device_meizu_m2468"
+           path="device/meizu/m2468"
+           remote="meizu-sm8550-kernel"
+           revision="refs/heads/lineage-23.2" />
+  <project name="android_kernel_meizu_sm8550"
+           path="kernel/meizu/sm8550"
+           remote="meizu-sm8550-kernel"
+           revision="refs/heads/lineage-23.2" />
+  <project name="android_kernel_meizu_sm8550-modules"
+           path="kernel/meizu/sm8550-modules"
+           remote="meizu-sm8550-kernel"
+           revision="refs/heads/lineage-23.2" />
+  <project name="android_kernel_meizu_sm8550-devicetrees"
+           path="kernel/meizu/sm8550-devicetrees"
+           remote="meizu-sm8550-kernel"
+           revision="refs/heads/lineage-23.2" />
+
+  <!-- Keep the ROM's prebuilts/clang/host/linux-x86 project intact. -->
+  <project name="platform/prebuilts/clang/host/linux-x86"
+           path="prebuilts/clang/host/linux-x86-kernel"
+           remote="meizu-kernel-aosp"
+           revision="9f759dee5cdc5f85d076c642a192f6a9232f7058"
+           clone-depth="1" />
+</manifest>
