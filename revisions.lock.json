@@ -7,14 +7,14 @@
       "name": "android_device_meizu_m2468",
       "path": "device/meizu/m2468",
       "url": "https://github.com/meizu-sm8550-kernel/android_device_meizu_m2468",
-      "commit": "32706bb0b011e42a2d8e2e0506782c5bd0315798",
+      "commit": "685ad27d86f717a315d682cb4e64a0d2bf86be04",
       "branch": "lineage-23.2"
     },
     {
       "name": "android_kernel_meizu_sm8550",
       "path": "kernel/meizu/sm8550",
       "url": "https://github.com/meizu-sm8550-kernel/android_kernel_meizu_sm8550",
-      "commit": "d3c2063ae347b3ce0f907fe2fc23282f73a1d3e7",
+      "commit": "2173a15f537b01a09aa264412a7cb9bdcebdf67d",
       "branch": "lineage-23.2"
     },
     {

@@ -1,5 +1,20 @@
 # Meizu 21 Note（M2468）内核源码清单
 
+2026-10-07 相机更新：启用现有 `qcom_pm8008-regulator` 驱动并在第二阶段显式加载。Note 的 I²C PMIC 父设备已绑定，但此前缺少 chip/LDO 子驱动，阻止相机组件完成绑定和创建 `/sys/kernel/camera/subparts_info`，CamX 在硬件信息初始化阶段中止。保留原 DT、电压、camera 源码及全部已有修复。
+
+kernel `2173a15f537b01a09aa264412a7cb9bdcebdf67d` 与 device `685ad27d86f717a315d682cb4e64a0d2bf86be04` 是同一供应缺口的配套提交。modules 仍为 `8d3cc55`，DT 仍为 `56be2d3`。本地只增量编译 PM8008，34项导入CRC、CFI/ThinLTO通过；新选择388项，在HBM387上仅新增该模块，原386基线保持。候选未加载，provider稳定、相机枚举、预览、拍照和录像尚待新镜像验证。
+
+已有配套 ROM 的服务器执行：
+
+```sh
+repo sync -c kernel/meizu/sm8550 device/meizu/m2468
+mka bacon
+```
+
+保留 out、ROM 默认 Clang 和现有 XML，由用户自行更新配套镜像。先检查 PM8008 两个子驱动绑定与七路电源、相机组件和 provider，再人工验证前后摄预览、切换、拍照保存及录像。不能用编译或模块加载证明成像正常。
+
+用户已在本轮之前确认指纹/HBM问题修好；下方旧轮“尚未上机”描述按历史时间保留，不覆盖这次用户确认。
+
 2026-10-06 HBM 更新：显示源码修复了已知关闭状态下重复写7仍被模式校验拒绝的问题，并将 Note 144/90Hz 的局部 HBM 与该模式不存在的 ADFR 命令分离。局部命令仍真实发送并检查错误，未使用其它模式的 ADFR 表；显式 minfps 请求在这两种模式仍返回不支持。原 framework 触摸门控和硬件 ready 握手保留。
 
 对应 modules 提交为 `5fc6644409889103d0a045480042cb11d2835024`、`8d3cc55a4720693e69914df1fdc8e4405668a808`。独立显示候选通过本地编译、737项导入CRC和故障回归，原386基线和JIIOV/WLAN候选保持；新387选择只替换显示模块。新HBM候选尚未实机验证，静止画面TE活性及完整AOD仍未闭合。已有配套ROM的服务器仅需 `repo sync -c kernel/meizu/sm8550-modules` 后 `mka bacon`，保留out、默认Clang及现有XML，由用户自行更新配套镜像。
