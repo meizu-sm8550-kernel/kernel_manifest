@@ -1,5 +1,11 @@
 # Meizu 21 Note（M2468）内核源码清单
 
+2026-10-06 HBM 更新：显示源码修复了已知关闭状态下重复写7仍被模式校验拒绝的问题，并将 Note 144/90Hz 的局部 HBM 与该模式不存在的 ADFR 命令分离。局部命令仍真实发送并检查错误，未使用其它模式的 ADFR 表；显式 minfps 请求在这两种模式仍返回不支持。原 framework 触摸门控和硬件 ready 握手保留。
+
+对应 modules 提交为 `5fc6644409889103d0a045480042cb11d2835024`、`8d3cc55a4720693e69914df1fdc8e4405668a808`。独立显示候选通过本地编译、737项导入CRC和故障回归，原386基线和JIIOV/WLAN候选保持；新387选择只替换显示模块。新HBM候选尚未实机验证，静止画面TE活性及完整AOD仍未闭合。已有配套ROM的服务器仅需 `repo sync -c kernel/meizu/sm8550-modules` 后 `mka bacon`，保留out、默认Clang及现有XML，由用户自行更新配套镜像。
+
+下方第五轮“尚未上机”保留当时状态；后续只读现场已确认JIIOV加载、平台绑定和HAL初始化属性成功，但不能由此推导校准、HBM或录入解锁已成功。
+
 为**官方 LineageOS 23.2 源码树**提供 M2468 设备树、内核、外部驱动和 DTS 的 `repo` 本地清单。同步后由 Lineage 的标准构建规则从源码编译，不需要本机接入包、`prepare_layout.py` 或服务器信息采集步骤。
 
 当前是源码 bring-up：原386模块基线和六份Note DT保留；新增JIIOV及配套WLAN替换候选后，选择库存为387项。既有镜像已进入系统，用户确认ESD、bark、Wi-Fi基本使用和启动提速。观察的ROM为LineageOS24.0 / Android17，不是官方23.2整ROM验证。
