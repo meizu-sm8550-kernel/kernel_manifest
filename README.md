@@ -4,6 +4,10 @@
 
 当前是源码 bring-up：已完成本地内核、386 个源码模块和 6 个 DT 的构建验证。2026-10-06 用户报告进入系统，只读 ADB 确认 `sys.boot_completed=1`、M2468 声卡、两颗 CS35L43 和 AudioFlinger/AudioPolicy 已注册；观察的 ROM 为 LineageOS 24.0 / Android 17 / SDK 37，内核为 5.15.211，不能视为官方 23.2 整 ROM 验证。音频播放/录音及日常功能仍待验证。这不是魅族官方源码发布，也不是 LineageOS 官方支持声明。
 
+2026-10-06 最新：用户确认音量下误截图和无法熄屏已修好，后续空闲输入采样未见旧电源键风暴。另已分别提交两项待实机验证的修复：设备配置默认关闭同步调试 UART 控制台；M2468 RC0 新增 `device_type = "pci"`，纠正当前 OF 解析器把 PCI ranges 误当普通 flags 的问题。后者保留全部原厂属性，六份 DT 与五组 overlay 合并仅有这一项属性增加，不能再称候选与原厂全属性完全相同。两项已离线验证；启动提速、PCI BAR 分配、Wi-Fi 驱动绑定和联网仍待新镜像验证。
+
+已有分支跟随清单的服务器，在现有 ROM 根目录执行 `repo sync -c device/meizu/m2468 kernel/meizu/sm8550-devicetrees` 后 `mka bacon`。无需重新下载 XML、清理 out 或更改 ROM 默认 Clang。
+
 ## 服务器同步和编译
 
 在已有的官方 `lineage-23.2` 源码树根目录执行。服务器已有的 `vendor/meizu/m2468` 等 vendor blobs 和其余 ROM 依赖继续使用；本组织不提供 dump、闭源 blobs 或预编译设备内核。
