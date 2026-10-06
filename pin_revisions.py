@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-"""Create a release manifest from committed sibling repositories or a SHA map."""
+"""Record release SHAs for audit; keep both XML entry points tracking the branch."""
 
 import argparse
 import json
@@ -58,34 +58,27 @@ def main():
     records = []
     for project in projects:
         name = project.get("name")
-        if name in revisions:
-            project.set("revision", revisions[name])
-            project.set("upstream", f"refs/heads/{BRANCH}")
-            project.set("dest-branch", BRANCH)
+        if any(attr in project.attrib for attr in ("revision", "upstream", "dest-branch")):
+            parser.error(f"{name}: project revision pins are disabled; use the remote branch")
         records.append({
             "name": name,
             "path": project.get("path"),
             "url": remotes[project.get("remote")] + name,
-            "commit": project.get("revision"),
+            "commit": revisions[name],
             **({"branch": BRANCH} if name in revisions else {}),
         })
 
-    ET.indent(tree, space="  ")
-    xml = ET.tostring(tree.getroot(), encoding="unicode")
-    (ROOT / "pinned.xml").write_text(
-        '<?xml version="1.0" encoding="UTF-8"?>\n'
-        '<!-- SPDX-License-Identifier: Apache-2.0 -->\n'
-        '<!-- Local manifest overlay; does not pin the full LineageOS platform. -->\n'
-        + xml + "\n"
-    )
+    # Keep the legacy URL usable for clients that already download pinned.xml.
+    # Release recording must never turn either entry point back into SHA pins.
+    (ROOT / "pinned.xml").write_bytes((ROOT / "local_manifest.xml").read_bytes())
     lock = {
-        "schema_version": 1,
+        "schema_version": 2,
         "lineageos_branch": BRANCH,
-        "scope": "Four M2468 source projects only; the rest of the ROM is not pinned.",
+        "scope": "Audit snapshot of four published commits; XML manifests follow the source branch and do not use these SHAs for checkout.",
         "projects": records,
     }
     (ROOT / "revisions.lock.json").write_text(json.dumps(lock, indent=2) + "\n")
-    print("Wrote pinned.xml and revisions.lock.json from exact commits.")
+    print("Recorded revisions.lock.json for audit; both XML aliases still follow the source branch.")
 
 
 if __name__ == "__main__":

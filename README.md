@@ -10,7 +10,7 @@
 
 ```bash
 mkdir -p .repo/local_manifests
-curl -fL https://raw.githubusercontent.com/meizu-sm8550-kernel/kernel_manifest/lineage-23.2/pinned.xml \
+curl -fL https://raw.githubusercontent.com/meizu-sm8550-kernel/kernel_manifest/lineage-23.2/local_manifest.xml \
   -o .repo/local_manifests/zzzz-meizu-m2468.xml
 repo sync -c -j8
 
@@ -46,7 +46,9 @@ repo init -u https://github.com/LineageOS/android.git -b lineage-23.2 --git-lfs
 | `android_kernel_meizu_sm8550-devicetrees` | `kernel/meizu/sm8550-devicetrees` |
 | `android_device_meizu_m2468` | `device/meizu/m2468` |
 
-前四个仓库的开发分支均为 `lineage-23.2`。`pinned.xml` 固定一次发布的四个源码提交；`revisions.lock.json` 记录同一组值。`local_manifest.xml` 跟随四仓分支最新提交，编译器由ROM主清单提供。需要跟进开发分支时，将下载 URL 中的 `pinned.xml` 改为 `local_manifest.xml`，安装到**同一个**本地清单文件；不要同时安装两份。
+前四个仓库的当前默认分支均为 `lineage-23.2`。`local_manifest.xml` 跟随该分支的最新提交，项目上不指定 revision，也不固定提交 SHA；专用 remote 统一指定 `refs/heads/lineage-23.2`，避免继承 ROM 主清单的 `avium-16.2` 或其它分支。每次 `repo sync -c` 都同步该源码分支最新提交。
+
+旧下载地址 `pinned.xml` 保留为 `local_manifest.xml` 的同内容兼容入口，**现在也不锁定提交**。两者安装到同一个 `.repo/local_manifests/zzzz-meizu-m2468.xml`，不要重复安装。`revisions.lock.json` 仅记录某次发布的 SHA 用于审计，不控制 repo 同步版本。
 
 清单按精确 `path` 替换表中项目，同时移除旧 `device/meizu/m2468-kernel` 预编译项目的 manifest 声明。`optional="true"` 允许这些旧项目不存在；同名但不同路径的项目不受影响。保留 `vendor/meizu/m2468`、其它设备项目和 ROM 默认的 `prebuilts/clang/host/linux-x86`。
 
@@ -62,7 +64,7 @@ ROM 构建规则以官方 **LineageOS 23.2** 为基准。内核源码基线来�
 
 本清单不拉取额外 Clang 仓库。保留旧 `prebuilts/clang/host/linux-x86-kernel` 路径的可选 `remove-project`，仅取消旧独立项目声明，不替换 ROM 默认工具链，也不运行本地目录删除命令。
 
-`pinned.xml` 仅锁定上述四个源码项目，不锁定整个 LineageOS 平台或服务器已有 vendor。需要记录一次服务器完整构建输入，可在同步后运行：
+两个 XML 均不固定提交 SHA。需要记录一次服务器实际同步到的完整构建输入，可在同步后运行：
 
 ```bash
 repo manifest -r -o m2468-build-manifest.xml
@@ -82,15 +84,15 @@ repo manifest -r -o m2468-build-manifest.xml
 
 本 manifest 仓库中的清单、脚本和文档使用 Apache-2.0，见 [LICENSE](LICENSE)。这不改变被引用源码、AOSP 工具链或设备固件各自的许可。本组织不再分发设备 dump、闭源固件、用户空间 blobs 或原厂内核二进制。
 
-## 维护发布锁
+## 维护发布记录
 
-维护者在四个源码仓库提交完成后生成固定清单，正常服务器构建不需要运行此脚本：
+维护者在源码提交发布后更新审计记录；脚本保留旧名称以兼容维护流程，但不再生成提交固定清单。正常服务器构建不需要运行此脚本：
 
 ```bash
 python3 pin_revisions.py --repos-dir ..
 ```
 
-该目录需包含表中的四个完整仓库名，且都在干净的 `lineage-23.2` 分支。也可用 `--revisions /path/to/revisions.json` 输入 JSON 对象，四个键为仓库名、值为真实的完整 40 位提交 SHA。发布时先推送源码提交，再发布与之对应的 `pinned.xml` 和 `revisions.lock.json`；不要填入占位 SHA。
+该目录需包含表中的四个完整仓库名，且都在干净的 `lineage-23.2` 分支。也可用 `--revisions /path/to/revisions.json` 输入 JSON 对象，四个键为仓库名、值为真实的完整 40 位提交 SHA。源码提交推送后，服务器普通 `repo sync -c` 即可取得更新，无需为每个新 SHA 重新下载 XML。维护者仍更新 `revisions.lock.json` 中的发布记录；脚本同时保持两个 XML 入口同内容，不会恢复项目 revision。不要填入占位 SHA。
 
 可选的 `verify_manifest.py --repo-source /path/to/git-repo` 使用官方 Repo 解析器做离线组合检查，不执行 sync、不修改服务器源码，也不是构建前置步骤。
 
