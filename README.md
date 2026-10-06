@@ -2,11 +2,11 @@
 
 为**官方 LineageOS 23.2 源码树**提供 M2468 设备树、内核、外部驱动和 DTS 的 `repo` 本地清单。同步后由 Lineage 的标准构建规则从源码编译，不需要本机接入包、`prepare_layout.py` 或服务器信息采集步骤。
 
-当前是源码 bring-up：已完成本地内核、386 个源码模块和 6 个 DT 的构建验证。2026-10-06 用户报告进入系统，只读 ADB 确认 `sys.boot_completed=1`、M2468 声卡、两颗 CS35L43 和 AudioFlinger/AudioPolicy 已注册；观察的 ROM 为 LineageOS 24.0 / Android 17 / SDK 37，内核为 5.15.211，不能视为官方 23.2 整 ROM 验证。音频播放/录音及日常功能仍待验证。这不是魅族官方源码发布，也不是 LineageOS 官方支持声明。
+当前是源码 bring-up：原386模块基线和六份M2468 DT保留；新增JIIOV及配套WLAN替换候选后，选择库存为387项。既有镜像已进入系统，用户确认ESD、bark、Wi-Fi基本使用和启动提速。观察的ROM为LineageOS24.0 / Android17，不是官方23.2整ROM验证。
 
-2026-10-06 最新：用户确认音量下误截图和无法熄屏已修好，后续空闲输入采样未见旧电源键风暴。另已分别提交两项待实机验证的修复：设备配置默认关闭同步调试 UART 控制台；M2468 RC0 新增 `device_type = "pci"`，纠正当前 OF 解析器把 PCI ranges 误当普通 flags 的问题。后者保留全部原厂属性，六份 DT 与五组 overlay 合并仅有这一项属性增加，不能再称候选与原厂全属性完全相同。两项已离线验证；启动提速、PCI BAR 分配、Wi-Fi 驱动绑定和联网仍待新镜像验证。
+2026-10-06 最新：JIIOV必要驱动已源码实现，精确ioctl、供电/IRQ生命周期与netlink30/port100均按M2468审计；仅M2468构建关闭WLAN无收发逻辑的Cesium占位socket，解除协议冲突。候选通过本地编译、CRC和接口回归，尚未上机。模块加载、probe、/dev/jiiov_fp、HAL/TEE、HBM、录入和解锁均待分别验证；新WLAN候选亦需实机回归。
 
-已有分支跟随清单的服务器，在现有 ROM 根目录执行 `repo sync -c device/meizu/m2468 kernel/meizu/sm8550-devicetrees` 后 `mka bacon`。无需重新下载 XML、清理 out 或更改 ROM 默认 Clang。
+已有此分支跟随XML的服务器，在现有ROM根目录执行 `repo sync -c kernel/meizu/sm8550-modules device/meizu/m2468` 后 `mka bacon`。无需重新下载同内容XML、清理out或更改ROM默认Clang。用户自行更新配套镜像后再验证候选。
 
 ## 服务器同步和编译
 
@@ -76,10 +76,10 @@ repo manifest -r -o m2468-build-manifest.xml
 
 ## 已验证内容与功能缺口
 
-- 本地已编译内核与 386 个源码模块，并验证 597 条 ELF 硬依赖边；这不涵盖 DT 供应者、固件、OEM init/sysfs 和启动依赖。
+- 本地原386模块基线保留；新选择库存387项，独立候选验证84项JIIOV和518项WLAN导入CRC，保留CFI/MODVERSIONS。库存与编译不证明模块加载、DT供应者、固件或HAL成功。
 - M2468 的 1 个 DTB、5 个 DTBO 由源码经内核 Kbuild/dtc 构建。DTS 包含从该机原厂 DT 重建的字节属性；这是可构建的重建源码，不是原厂维护的带标签 DTS，也不代表设备语义全部恢复。
 - 显示和 Goodix 触控包含针对 M2468 的源码适配。HBM 只实现受限亮屏路径；FOD/AOD、黑屏切换及完整指纹联动没有完成运行验证。
-- `jiiov_fingerprint` 以及魅族充电、温控、启动和其它 OEM 模块仍有源码缺口。通用高通驱动可编译不等于这些 OEM 功能已恢复。
+- `jiiov_fingerprint`已补源码候选，配套设备配置增加第二阶段加载、专用节点标签及HAL ioctl权限；尚未实机验证。充电、温控、启动和其它OEM模块仍有缺口。
 - 已确认上述设备完成启动；未在本地验证完整 ROM 构建，也未验证所有模块加载、外设和日常功能。已编译的模块数量不能作为整机兼容性结论。
 
 ## 来源与许可
