@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Local manifest overlay; does not pin the full LineageOS platform. -->
+<!-- Follow the latest M2468 source branch; this is not a commit-pinned manifest. -->
 <manifest>
-  <remote name="meizu-sm8550-kernel" fetch="https://github.com/meizu-sm8550-kernel/" />
+  <!-- Scope the source branch to this remote; leave the ROM default untouched. -->
+  <remote name="meizu-sm8550-kernel" fetch="https://github.com/meizu-sm8550-kernel/"
+          revision="refs/heads/lineage-23.2" />
+
+  <!-- Exact paths only: projects with the same names elsewhere are retained. -->
   <remove-project path="device/meizu/m2468" optional="true" />
   <remove-project path="device/meizu/m2468-kernel" optional="true" />
   <remove-project path="kernel/meizu/sm8550" optional="true" />
   <remove-project path="kernel/meizu/sm8550-modules" optional="true" />
   <remove-project path="kernel/meizu/sm8550-devicetrees" optional="true" />
+  <!-- Retire the legacy duplicate Clang project; no replacement is fetched. -->
   <remove-project path="prebuilts/clang/host/linux-x86-kernel" optional="true" />
-  <project name="android_device_meizu_m2468" path="device/meizu/m2468" remote="meizu-sm8550-kernel" revision="a7ced1117aab60d34133e9c65f645210ef829bfc" upstream="refs/heads/lineage-23.2" dest-branch="lineage-23.2" />
-  <project name="android_kernel_meizu_sm8550" path="kernel/meizu/sm8550" remote="meizu-sm8550-kernel" revision="c6f8ec5aa466ae062ce4b94dbd8af00a60c83cb1" upstream="refs/heads/lineage-23.2" dest-branch="lineage-23.2" />
-  <project name="android_kernel_meizu_sm8550-modules" path="kernel/meizu/sm8550-modules" remote="meizu-sm8550-kernel" revision="cf10127da7ee7f16d1beeac2018edaa815b0c2b2" upstream="refs/heads/lineage-23.2" dest-branch="lineage-23.2" />
-  <project name="android_kernel_meizu_sm8550-devicetrees" path="kernel/meizu/sm8550-devicetrees" remote="meizu-sm8550-kernel" revision="e9fde834f4c89c37408f215956239e849b330ba9" upstream="refs/heads/lineage-23.2" dest-branch="lineage-23.2" />
+
+  <project name="android_device_meizu_m2468"
+           path="device/meizu/m2468"
+           remote="meizu-sm8550-kernel" />
+  <project name="android_kernel_meizu_sm8550"
+           path="kernel/meizu/sm8550"
+           remote="meizu-sm8550-kernel" />
+  <project name="android_kernel_meizu_sm8550-modules"
+           path="kernel/meizu/sm8550-modules"
+           remote="meizu-sm8550-kernel" />
+  <project name="android_kernel_meizu_sm8550-devicetrees"
+           path="kernel/meizu/sm8550-devicetrees"
+           remote="meizu-sm8550-kernel" />
+
+  <!-- Clang is provided by the ROM manifest and selected by platform defaults. -->
 </manifest>

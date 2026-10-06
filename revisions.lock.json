@@ -1,7 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "lineageos_branch": "lineage-23.2",
-  "scope": "Four M2468 source projects only; the rest of the ROM is not pinned.",
+  "scope": "Audit snapshot of four published commits; XML manifests follow the source branch and do not use these SHAs for checkout.",
   "projects": [
     {
       "name": "android_device_meizu_m2468",
