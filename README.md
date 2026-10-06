@@ -2,7 +2,7 @@
 
 为**官方 LineageOS 23.2 源码树**提供 M2468 设备树、内核、外部驱动和 DTS 的 `repo` 本地清单。同步后由 Lineage 的标准构建规则从源码编译，不需要本机接入包、`prepare_layout.py` 或服务器信息采集步骤。
 
-当前是源码 bring-up：已完成本地内核、385 个源码模块和 6 个 DT 的构建验证；**尚未完成完整 LineageOS ROM 编译或首次真机启动验证**。这不是魅族官方源码发布，也不是 LineageOS 官方支持声明。
+当前是源码 bring-up：已完成本地内核、386 个源码模块和 6 个 DT 的构建验证；已有源码内核运行至开机动画的证据，**音频修复候选尚未上机，尚无正常进入桌面和音频功能证据**。这不是魅族官方源码发布，也不是 LineageOS 官方支持声明。
 
 ## 服务器同步和编译
 
@@ -82,7 +82,7 @@ repo manifest -r -o m2468-build-manifest.xml
 
 ## 已验证内容与功能缺口
 
-- 本地已编译内核与 385 个源码模块，并验证 597 条 ELF 硬依赖边；这不涵盖 DT 供应者、固件、OEM init/sysfs 和启动依赖。
+- 本地已编译内核与 386 个源码模块，并验证 597 条 ELF 硬依赖边；这不涵盖 DT 供应者、固件、OEM init/sysfs 和启动依赖。
 - M2468 的 1 个 DTB、5 个 DTBO 由源码经内核 Kbuild/dtc 构建。DTS 包含从该机原厂 DT 重建的字节属性；这是可构建的重建源码，不是原厂维护的带标签 DTS，也不代表设备语义全部恢复。
 - 显示和 Goodix 触控包含针对 M2468 的源码适配。HBM 只实现受限亮屏路径；FOD/AOD、黑屏切换及完整指纹联动没有完成运行验证。
 - `jiiov_fingerprint` 以及魅族充电、温控、启动和其它 OEM 模块仍有源码缺口。通用高通驱动可编译不等于这些 OEM 功能已恢复。
@@ -105,3 +105,5 @@ python3 pin_revisions.py --repos-dir ..
 该目录需包含表中的四个完整仓库名，且都在干净的 `lineage-23.2` 分支。也可用 `--revisions /path/to/revisions.json` 输入 JSON 对象，四个键为仓库名、值为真实的完整 40 位提交 SHA。发布时先推送源码提交，再发布与之对应的 `pinned.xml` 和 `revisions.lock.json`；不要填入占位 SHA。
 
 可选的 `verify_manifest.py --repo-source /path/to/git-repo` 使用官方 Repo 解析器做离线组合检查，不执行 sync、不修改服务器源码，也不是构建前置步骤。
+
+2026-10-06 音频更新：新增源码 CS35L43 功放模块，并按 M2468 原厂接口修正 TX3/TX4 与 secondary MI2S 双功放链路；设备 vendor 加载清单同步更新。公开源码不包含原厂模块或调音固件。新候选须由用户构建并验证，编译/CRC 检查不代表已解决全部启动问题。
