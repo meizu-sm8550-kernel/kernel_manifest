@@ -29,6 +29,8 @@ def main():
                         help="JSON object mapping each source repo name to its 40-character commit")
     args = parser.parse_args()
     tree = ET.parse(ROOT / "local_manifest.xml")
+    if tree.getroot().findall("remove-project"):
+        parser.error("remove-project entries are disabled; keep the source manifest additive")
     projects = tree.getroot().findall("project")
     source_projects = [p for p in projects if p.get("remote") == "meizu-sm8550-kernel"]
     expected_names = {p.get("name") for p in source_projects}

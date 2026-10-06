@@ -54,11 +54,11 @@ repo init -u https://github.com/LineageOS/android.git -b lineage-23.2 --git-lfs
 
 旧下载地址 `pinned.xml` 保留为 `local_manifest.xml` 的同内容兼容入口，**现在也不锁定提交**。两者安装到同一个 `.repo/local_manifests/zzzz-meizu-m2468.xml`，不要重复安装。`revisions.lock.json` 仅记录某次发布的 SHA 用于审计，不控制 repo 同步版本。
 
-清单按精确 `path` 替换表中项目，同时移除旧 `device/meizu/m2468-kernel` 预编译项目的 manifest 声明。`optional="true"` 允许这些旧项目不存在；同名但不同路径的项目不受影响。保留 `vendor/meizu/m2468`、其它设备项目和 ROM 默认的 `prebuilts/clang/host/linux-x86`。
+清单只添加表中四个源码项目，不含任何 `remove-project`。其它清单声明的项目保持原样，包括 `vendor/meizu/m2468`、其它设备项目、ROM 默认 Clang，以及可能存在的旧 prebuilt 或独立 Clang 项目。
 
-Repo 按文件名字母顺序读取 `.repo/local_manifests/*.xml`。本清单应放在其它声明这些相同路径的本地清单之后；后续文件若再次声明相同路径，会报 duplicate path，应只调整冲突条目。清单移除的是项目声明，随后普通 `repo sync` 可能清理退出清单的旧 checkout；有本地修改时先在原仓库保存提交或备份。本流程不使用 `--force-sync`、`--force-remove-dirty` 或删除工作目录的命令。
+四个源码路径应各声明一次。若主清单或另一份 local manifest 已声明相同路径，Repo 会报告 `duplicate path`；应将已有声明整理为一个入口。本清单不会自动覆盖或移除它们，XML 文件排序也不能消除重复声明。
 
-这些行为已对照 [Repo 官方 manifest 格式](https://gerrit.googlesource.com/git-repo/+/7bba4ee47e72ccfe7838b62869029e2f7436ce39/docs/manifest-format.md) 和实际解析器验证：缺少旧项目、存在旧项目、相同项目名位于其它路径、ROM 默认 Clang 保留、旧独立 Clang 项目取消。
+这些行为已对照 [Repo 官方 manifest 格式](https://gerrit.googlesource.com/git-repo/+/7bba4ee47e72ccfe7838b62869029e2f7436ce39/docs/manifest-format.md) 和实际解析器验证：正常添加、保留不同路径的旧项目、相同名字位于其它路径、主清单和本地清单的重复路径报错。两个入口各覆盖三种 ROM 分支、四种布局，共24组场景。
 
 ## 版本和工具链
 
@@ -66,7 +66,7 @@ ROM 构建规则以官方 **LineageOS 23.2** 为基准。内核源码基线来�
 
 内核编译器使用 LineageOS 平台默认选择。设备树不设置 `TARGET_KERNEL_CLANG_VERSION` 或 `TARGET_KERNEL_CLANG_PATH`，官方规则使用 `LLVM_AOSP_PREBUILTS_VERSION` 与 ROM 自带的 `prebuilts/clang/host/linux-x86`。
 
-本清单不拉取额外 Clang 仓库。保留旧 `prebuilts/clang/host/linux-x86-kernel` 路径的可选 `remove-project`，仅取消旧独立项目声明，不替换 ROM 默认工具链，也不运行本地目录删除命令。
+本清单不声明额外 Clang 仓库，也不移除其它清单可能声明的 Clang 项目。内核继续使用 ROM 默认工具链。
 
 两个 XML 均不固定提交 SHA。需要记录一次服务器实际同步到的完整构建输入，可在同步后运行：
 
@@ -96,7 +96,7 @@ repo manifest -r -o m2468-build-manifest.xml
 python3 pin_revisions.py --repos-dir ..
 ```
 
-该目录需包含表中的四个完整仓库名，且都在干净的 `lineage-23.2` 分支。也可用 `--revisions /path/to/revisions.json` 输入 JSON 对象，四个键为仓库名、值为真实的完整 40 位提交 SHA。源码提交推送后，服务器普通 `repo sync -c` 即可取得更新，无需为每个新 SHA 重新下载 XML。维护者仍更新 `revisions.lock.json` 中的发布记录；脚本同时保持两个 XML 入口同内容，不会恢复项目 revision。不要填入占位 SHA。
+该目录需包含表中的四个完整仓库名，且都在干净的 `lineage-23.2` 分支。也可用 `--revisions /path/to/revisions.json` 输入 JSON 对象，四个键为仓库名、值为真实的完整 40 位提交 SHA。源码提交推送后，服务器普通 `repo sync -c` 即可取得更新，无需为每个新 SHA 重新下载 XML。维护者仍更新 `revisions.lock.json` 中的发布记录；脚本同时保持两个 XML 入口同内容，不会恢复项目 revision，并拒绝含 `remove-project` 的输入。不要填入占位 SHA。
 
 可选的 `verify_manifest.py --repo-source /path/to/git-repo` 使用官方 Repo 解析器做离线组合检查，不执行 sync、不修改服务器源码，也不是构建前置步骤。
 
