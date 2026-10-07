@@ -21,7 +21,7 @@
       "name": "android_kernel_meizu_sm8550-modules",
       "path": "kernel/meizu/sm8550-modules",
       "url": "https://github.com/meizu-sm8550-kernel/android_kernel_meizu_sm8550-modules",
-      "commit": "e734482c2c817d167c7455a426baa5a540aa4354",
+      "commit": "b3adb9d39d6faa467575f6256f89836f297ae477",
       "branch": "lineage-23.2"
     },
     {
