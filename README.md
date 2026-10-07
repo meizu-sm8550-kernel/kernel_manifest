@@ -1,5 +1,22 @@
 # Meizu 21 Note（M2468）内核源码清单
 
+## 2026-10-07：Note 触控坐标转换已下沉驱动
+
+用户已确认指纹、相机和闪光灯问题修复；后续闪光灯源码 modules `5af80e5`、device `d1ab6c4` 保留。最新触控提交 modules `4b1cfe8` 在 M2468 MP 的 Goodix 输入出口将 X/Y 除以10，保持1264×2780轴范围及其它板型行为，不新增手势或伪造UI-ready。本地编译、127项CRC、CFI/ThinLTO及手指上报回归通过；无ADB，尚未实机验证本次触控修复。
+
+**使用此驱动的ROM必须移除 `0001-Fix-touch-on-Meizu-21-Note.patch`，避免输入框架与驱动重复缩放。** 已具备前述修复的服务器仅同步：
+
+```sh
+repo sync -c kernel/meizu/sm8550-modules
+mka bacon
+```
+
+保留out、默认Clang和现有XML；由用户自行更新镜像，人工验证全屏点击/拖动、多点、亮灭屏恢复及指纹。审计锁已补齐闪光灯和本次触控提交，XML继续只添加四个项目并跟随lineage-23.2，未固定项目SHA。
+
+下面为相机供应者等历史发布说明，不覆盖以上最新状态。
+
+---
+
 2026-10-07 相机更新：启用现有 `qcom_pm8008-regulator` 驱动并在第二阶段显式加载。Note 的 I²C PMIC 父设备已绑定，但此前缺少 chip/LDO 子驱动，阻止相机组件完成绑定和创建 `/sys/kernel/camera/subparts_info`，CamX 在硬件信息初始化阶段中止。保留原 DT、电压、camera 源码及全部已有修复。
 
 kernel `2173a15f537b01a09aa264412a7cb9bdcebdf67d` 与 device `685ad27d86f717a315d682cb4e64a0d2bf86be04` 是同一供应缺口的配套提交。modules 仍为 `8d3cc55`，DT 仍为 `56be2d3`。本地只增量编译 PM8008，34项导入CRC、CFI/ThinLTO通过；新选择388项，在HBM387上仅新增该模块，原386基线保持。候选未加载，provider稳定、相机枚举、预览、拍照和录像尚待新镜像验证。
