@@ -1,0 +1,593 @@
+{
+  "date": "2026-10-10",
+  "backup_branch": "archive/m2468-before-cleanup-20261010",
+  "scope": "Downstream history only; original upstream commits and runtime interfaces are preserved.",
+  "repositories": {
+    "kernel": {
+      "old_head": "18ab3f33d00c3d75861c20cc3a5cc14bf3d872b2",
+      "rewritten_head": "c55379d76f9d63a50558458fc9ab60d7b72e8d4d",
+      "release_head": "6121776223d12f7ff1b24b57e671fcd179041dfd",
+      "commits": [
+        {
+          "old": "abb0bb1a1053a5dbf22d911ca8a8178bf0e1e7e9",
+          "new": "c6f8ec5aa466ae062ce4b94dbd8af00a60c83cb1",
+          "parts": [
+            {
+              "commit": "c6f8ec5aa466ae062ce4b94dbd8af00a60c83cb1",
+              "subject": "arm64: configs: Add M2468 source build configuration"
+            }
+          ]
+        },
+        {
+          "old": "d3c2063ae347b3ce0f907fe2fc23282f73a1d3e7",
+          "new": "ae01b107e0609dfc275ba697498ddac5503a8423",
+          "parts": [
+            {
+              "commit": "ae01b107e0609dfc275ba697498ddac5503a8423",
+              "subject": "input: pm8941-pwrkey: Handle M2468 Gen3 bark interrupts"
+            }
+          ]
+        },
+        {
+          "old": "2173a15f537b01a09aa264412a7cb9bdcebdf67d",
+          "new": "36e5dfaa9e5ef70adda20698bd4a6949459f2ec0",
+          "parts": [
+            {
+              "commit": "36e5dfaa9e5ef70adda20698bd4a6949459f2ec0",
+              "subject": "arm64: configs: Enable M2468 PM8008 camera regulators"
+            }
+          ]
+        },
+        {
+          "old": "7bb38025dfb9a1c6bb1cf45fdd2c8d185eef8015",
+          "new": "925f8f9f5a3c6515d4cdba968b42d299cb476384",
+          "parts": [
+            {
+              "commit": "925f8f9f5a3c6515d4cdba968b42d299cb476384",
+              "subject": "input: qcom-hv-haptics: Honor M2468 constant drive voltage"
+            }
+          ]
+        },
+        {
+          "old": "18ab3f33d00c3d75861c20cc3a5cc14bf3d872b2",
+          "new": "c55379d76f9d63a50558458fc9ab60d7b72e8d4d",
+          "parts": [
+            {
+              "commit": "c55379d76f9d63a50558458fc9ab60d7b72e8d4d",
+              "subject": "input: qcom-hv-haptics: Restore M2468 persisted boot period"
+            }
+          ]
+        }
+      ]
+    },
+    "modules": {
+      "old_head": "eeeb4e314ca390e34bfc5a13e9613f075bb6a64e",
+      "rewritten_head": "377a60b0ffe5de81476edc7496b4589b2815e79a",
+      "release_head": "e1aac17f9ce469344e3e4883e9fff4d5c3245bed",
+      "commits": [
+        {
+          "old": "e8f6ef62888a1398ef81451b39ecaea795d73a6d",
+          "new": "afd79f64bba718c55ea00a6b4af88ca18062b9fb",
+          "parts": [
+            {
+              "commit": "0225d28cdc1f1005b2e1ec525cafb07a43a0cb42",
+              "subject": "display-drivers: Add M2468 panel and local HBM support"
+            },
+            {
+              "commit": "b7a5d95c9e3ced84fa3509b51916d3aacf44611a",
+              "subject": "touch-drivers: goodix: Add M2468 support"
+            },
+            {
+              "commit": "13bf1c1d796bb38094cef976f53ac3647730b978",
+              "subject": "wlan: Fix the external module name and build root"
+            },
+            {
+              "commit": "afd79f64bba718c55ea00a6b4af88ca18062b9fb",
+              "subject": "kernel-modules: Document M2468 source provenance"
+            }
+          ]
+        },
+        {
+          "old": "f12a4579fb7f57bd31e9c8e32b71e375b0fbbedf",
+          "new": "4a910d35cbc42af51c538a3a139218063378e528",
+          "parts": [
+            {
+              "commit": "4a910d35cbc42af51c538a3a139218063378e528",
+              "subject": "kernel-modules: Use the Meizu kernel namespace"
+            }
+          ]
+        },
+        {
+          "old": "80e945ff9d8433046ede4203b2c76fddca037de4",
+          "new": "15406c112164e83e44008a1a8784dec3d13b65b9",
+          "parts": [
+            {
+              "commit": "15406c112164e83e44008a1a8784dec3d13b65b9",
+              "subject": "audio-kernel: Add M2468 CS35L43 support"
+            }
+          ]
+        },
+        {
+          "old": "97ed11c26cde8dd8f6c4b8d8ed1e698ebaa65a82",
+          "new": "0313914d35b49a7d3ca0d3cd46c1c5e6f74ca7f1",
+          "parts": [
+            {
+              "commit": "0313914d35b49a7d3ca0d3cd46c1c5e6f74ca7f1",
+              "subject": "audio-kernel: cs35l43: Fix relative source include paths"
+            }
+          ]
+        },
+        {
+          "old": "0a20ec456beece601023c42b30970fcd9c17a23f",
+          "new": "cf10127da7ee7f16d1beeac2018edaa815b0c2b2",
+          "parts": [
+            {
+              "commit": "cf10127da7ee7f16d1beeac2018edaa815b0c2b2",
+              "subject": "display-drivers: Use M2468 ILI7838E banked ESD checks"
+            }
+          ]
+        },
+        {
+          "old": "2f3b32c4c8d6e0eeb6e41195976be522390fdf96",
+          "new": "7e34b6a977a6c6be52b70b7cf3c62751bc6956be",
+          "parts": [
+            {
+              "commit": "7e34b6a977a6c6be52b70b7cf3c62751bc6956be",
+              "subject": "wlan: Make the Cesium netlink socket optional"
+            }
+          ]
+        },
+        {
+          "old": "f189a69c4afd662a724feaeb7a1f0ddd5fbfbe45",
+          "new": "26969dc5c418ea26f5992ea8f15481f410e87c22",
+          "parts": [
+            {
+              "commit": "26969dc5c418ea26f5992ea8f15481f410e87c22",
+              "subject": "fingerprint: jiiov: Add M2468 platform support"
+            }
+          ]
+        },
+        {
+          "old": "0430c8198e359c1cb1389d3ed0a6d08374d1aeef",
+          "new": "03b0ee8bb286bd0d4fed217bdceb2dcc632f7fdb",
+          "parts": [
+            {
+              "commit": "03b0ee8bb286bd0d4fed217bdceb2dcc632f7fdb",
+              "subject": "fingerprint: jiiov: Support the ROM Kbuild wrapper"
+            }
+          ]
+        },
+        {
+          "old": "5fc6644409889103d0a045480042cb11d2835024",
+          "new": "a5b8392d437efeaba47913710c66195730a5a1ba",
+          "parts": [
+            {
+              "commit": "a5b8392d437efeaba47913710c66195730a5a1ba",
+              "subject": "display-drivers: Make M2468 local HBM disable idempotent"
+            }
+          ]
+        },
+        {
+          "old": "8d3cc55a4720693e69914df1fdc8e4405668a808",
+          "new": "6da11bef24cd1562f76ce92e3c083a99899d8c6c",
+          "parts": [
+            {
+              "commit": "6da11bef24cd1562f76ce92e3c083a99899d8c6c",
+              "subject": "display-drivers: Decouple M2468 fixed-refresh HBM from ADFR"
+            }
+          ]
+        },
+        {
+          "old": "5af80e5c8e7b332d71253381aaa413f5dd9fbf9f",
+          "new": "379f46f5fc744fdf9a482f0daff83155d82c52b6",
+          "parts": [
+            {
+              "commit": "379f46f5fc744fdf9a482f0daff83155d82c52b6",
+              "subject": "camera-kernel: Match the M2468 four-source flash ABI"
+            }
+          ]
+        },
+        {
+          "old": "4b1cfe896149981003217cac0e600ebaf5511f4c",
+          "new": "e734482c2c817d167c7455a426baa5a540aa4354",
+          "parts": [
+            {
+              "commit": "e734482c2c817d167c7455a426baa5a540aa4354",
+              "subject": "touch-drivers: goodix: Normalize M2468 coordinate units"
+            }
+          ]
+        },
+        {
+          "old": "15aa80921a882983d72347799fae3851fbfc5900",
+          "new": "b3adb9d39d6faa467575f6256f89836f297ae477",
+          "parts": [
+            {
+              "commit": "b3adb9d39d6faa467575f6256f89836f297ae477",
+              "subject": "touch-drivers: goodix: Restore M2468 default report rate"
+            }
+          ]
+        },
+        {
+          "old": "b6dd08658952d1bc0bafc6e91d1099c1d8fd094b",
+          "new": "221a5b835d11adb6df63932b155ea41d355bee7a",
+          "parts": [
+            {
+              "commit": "221a5b835d11adb6df63932b155ea41d355bee7a",
+              "subject": "display-drivers: Restore M2468 PWM/DC and demura transactions"
+            }
+          ]
+        },
+        {
+          "old": "5ac110be5d8e273367711908b1981125d00b83e4",
+          "new": "ec44aa5260aa67ded0ab2d0670127f9cf5270b37",
+          "parts": [
+            {
+              "commit": "ec44aa5260aa67ded0ab2d0670127f9cf5270b37",
+              "subject": "display-drivers: Preserve M2468 TE mux during backlight sync"
+            }
+          ]
+        },
+        {
+          "old": "dab2003b49edf4e4f3ccf83c1626f8f597eee0e1",
+          "new": "e3efd3990cb79e7788b7eccafe68900d5bdf9c11",
+          "parts": [
+            {
+              "commit": "e3efd3990cb79e7788b7eccafe68900d5bdf9c11",
+              "subject": "display-drivers: Synchronize M2468 backlight with SDE on wake"
+            }
+          ]
+        },
+        {
+          "old": "eeeb4e314ca390e34bfc5a13e9613f075bb6a64e",
+          "new": "377a60b0ffe5de81476edc7496b4589b2815e79a",
+          "parts": [
+            {
+              "commit": "377a60b0ffe5de81476edc7496b4589b2815e79a",
+              "subject": "display-drivers: Separate M2468 encoder lookup from validation"
+            }
+          ]
+        }
+      ]
+    },
+    "devicetrees": {
+      "old_head": "56be2d3236974c636694c26b7414d33c3fdf5fd0",
+      "rewritten_head": "0f395523f55894e44ef170124d2a86b92113a303",
+      "release_head": "060e69b9b2d0f6db0a9fd0950527d0a9f4500f78",
+      "commits": [
+        {
+          "old": "b3515f39ba10d50a9bb33ae2fc7519ad16c57191",
+          "new": "e9fde834f4c89c37408f215956239e849b330ba9",
+          "parts": [
+            {
+              "commit": "e9fde834f4c89c37408f215956239e849b330ba9",
+              "subject": "devicetree: Add M2468 source trees"
+            }
+          ]
+        },
+        {
+          "old": "56be2d3236974c636694c26b7414d33c3fdf5fd0",
+          "new": "0f395523f55894e44ef170124d2a86b92113a303",
+          "parts": [
+            {
+              "commit": "0f395523f55894e44ef170124d2a86b92113a303",
+              "subject": "devicetree: Declare the M2468 RC0 PCI bus type"
+            }
+          ]
+        }
+      ]
+    },
+    "device": {
+      "old_head": "5211799f9b3e7c15b21716a66370c30085d24571",
+      "rewritten_head": "137d11f1145afb89643b08a4db1bf581505241a3",
+      "release_head": "5bd09b67cfd7a0763038e4275ef67e6a2f17eb1f",
+      "commits": [
+        {
+          "old": "ac935173ec01cea78dc0ee18f68fe0a022a8abf2",
+          "new": "31a45149d5473d2a8a495bf8ed3704852b69a6a7",
+          "parts": [
+            {
+              "commit": "31a45149d5473d2a8a495bf8ed3704852b69a6a7",
+              "subject": "m2468: Build the kernel, device trees and modules from source"
+            }
+          ]
+        },
+        {
+          "old": "4c8399bbc041803441dab2e7699079e3bed2803e",
+          "new": "a3c8ba621f191c84b1843d7a0cca3b0f40e05921",
+          "parts": [
+            {
+              "commit": "a3c8ba621f191c84b1843d7a0cca3b0f40e05921",
+              "subject": "m2468: Load the source-built CS35L43 amplifier module"
+            }
+          ]
+        },
+        {
+          "old": "3cb2c799bd0b1dbb63e37dbbfb736e69e81c984a",
+          "new": "a7ced1117aab60d34133e9c65f645210ef829bfc",
+          "parts": [
+            {
+              "commit": "a7ced1117aab60d34133e9c65f645210ef829bfc",
+              "subject": "m2468: Use the platform default Clang toolchain"
+            }
+          ]
+        },
+        {
+          "old": "1b46de1fb427d58f4c6e6f3cda0e2d9db17076ae",
+          "new": "726250dc72afb167c73ab68fe415351fd8f61516",
+          "parts": [
+            {
+              "commit": "726250dc72afb167c73ab68fe415351fd8f61516",
+              "subject": "m2468: Disable the synchronous debug UART console by default"
+            }
+          ]
+        },
+        {
+          "old": "32706bb0b011e42a2d8e2e0506782c5bd0315798",
+          "new": "0aac784c5704ab48e4133464d43947b0ef6bb2e4",
+          "parts": [
+            {
+              "commit": "0aac784c5704ab48e4133464d43947b0ef6bb2e4",
+              "subject": "m2468: Build JIIOV and grant fingerprint HAL access"
+            }
+          ]
+        },
+        {
+          "old": "685ad27d86f717a315d682cb4e64a0d2bf86be04",
+          "new": "dfb6a9fdb6acf9f378868695d4958978d528fee5",
+          "parts": [
+            {
+              "commit": "dfb6a9fdb6acf9f378868695d4958978d528fee5",
+              "subject": "m2468: Load PM8008 camera regulators after the I2C PMIC"
+            }
+          ]
+        },
+        {
+          "old": "d1ab6c4694b96294489f145b2d4f1275aa6e3631",
+          "new": "ba7f35c550495134bc4c6f8aa0cdd68ea9d7f6b3",
+          "parts": [
+            {
+              "commit": "ba7f35c550495134bc4c6f8aa0cdd68ea9d7f6b3",
+              "subject": "m2468: Select the four-source camera flash ABI"
+            }
+          ]
+        },
+        {
+          "old": "5211799f9b3e7c15b21716a66370c30085d24571",
+          "new": "137d11f1145afb89643b08a4db1bf581505241a3",
+          "parts": [
+            {
+              "commit": "137d11f1145afb89643b08a4db1bf581505241a3",
+              "subject": "m2468: Consolidate source kernel settings in BoardConfig"
+            }
+          ]
+        }
+      ]
+    },
+    "manifest": {
+      "old_head": "c00e9e6e15d16919b400156658b577990729be3e",
+      "rewritten_head": "1b8da0000c0dd19c7120fe19b6b2eb96e3fe3f6a",
+      "commits": [
+        {
+          "old": "77526f44064e48ac08e567144697b8093baad597",
+          "new": "4b2323df24ddaafd2064bc3236e4d528c3329e99",
+          "parts": [
+            {
+              "commit": "4b2323df24ddaafd2064bc3236e4d528c3329e99",
+              "subject": "manifest: Add the M2468 source stack for LineageOS 23.2"
+            }
+          ]
+        },
+        {
+          "old": "e98783062e29232b9bee607de1bf50310a82f6be",
+          "new": "791d1864a91379c68b4c55c70b462a8dc7451a20",
+          "parts": [
+            {
+              "commit": "791d1864a91379c68b4c55c70b462a8dc7451a20",
+              "subject": "manifest: Update the M2468 modules namespace revision"
+            }
+          ]
+        },
+        {
+          "old": "3221a173c9805f52c458686a96dc3bf4462f3b96",
+          "new": "7815f62c4f2f6c2613bb6993c64f691e4200730a",
+          "parts": [
+            {
+              "commit": "7815f62c4f2f6c2613bb6993c64f691e4200730a",
+              "subject": "manifest: Update M2468 CS35L43 sources and load lists"
+            }
+          ]
+        },
+        {
+          "old": "e67dfd41aed5b035d2b126addd98691c1d52dcad",
+          "new": "51f4a243a710eb371d174e0b88aed2695f4b1af7",
+          "parts": [
+            {
+              "commit": "51f4a243a710eb371d174e0b88aed2695f4b1af7",
+              "subject": "manifest: Use the ROM Clang toolchain"
+            }
+          ]
+        },
+        {
+          "old": "2ec26066c33183e7817f00c51eacc556a076d636",
+          "new": "388411b3585173eafaade9df6414a32a57e78d80",
+          "parts": [
+            {
+              "commit": "388411b3585173eafaade9df6414a32a57e78d80",
+              "subject": "manifest: Update the CS35L43 include path fix"
+            }
+          ]
+        },
+        {
+          "old": "933ed8ed803d47549fba1174944271ca26230047",
+          "new": "fb19bf44d2230a54c078980045ed4abd97e83db7",
+          "parts": [
+            {
+              "commit": "fb19bf44d2230a54c078980045ed4abd97e83db7",
+              "subject": "manifest: Update the M2468 ILI7838E ESD fix"
+            }
+          ]
+        },
+        {
+          "old": "fb0637b6775bfab3a12384aa7bed9037668e880b",
+          "new": "acf8f18e27ba8141e83c4ce7ede358324ac85828",
+          "parts": [
+            {
+              "commit": "acf8f18e27ba8141e83c4ce7ede358324ac85828",
+              "subject": "manifest: Track the source branch instead of fixed commits"
+            }
+          ]
+        },
+        {
+          "old": "50b3dea26fc5c9d917e62be859a028ee2d035969",
+          "new": "e93d7d459c0e7dd67eb4b2a190ab29ad93eabd15",
+          "parts": [
+            {
+              "commit": "e93d7d459c0e7dd67eb4b2a190ab29ad93eabd15",
+              "subject": "manifest: Record M2468 bark IRQ and ESD fixes"
+            }
+          ]
+        },
+        {
+          "old": "b1c6a574425c68304b8f0eff8ed13fcd5b8c1e4d",
+          "new": "401016410fb97103d8d53738d8148a95a8246c4e",
+          "parts": [
+            {
+              "commit": "401016410fb97103d8d53738d8148a95a8246c4e",
+              "subject": "manifest: Record the M2468 debug console fix"
+            }
+          ]
+        },
+        {
+          "old": "7e935a97ab897515626d406f29687cda51fe797e",
+          "new": "817e0f5708a975557a7043c6ed2a61f31195e5cb",
+          "parts": [
+            {
+              "commit": "817e0f5708a975557a7043c6ed2a61f31195e5cb",
+              "subject": "manifest: Record the M2468 RC0 PCI resource fix"
+            }
+          ]
+        },
+        {
+          "old": "eff1cfa848c86fc90410e25f05cba8142463aaef",
+          "new": "1943c4852251b81353188a23340ddde425bb93e8",
+          "parts": [
+            {
+              "commit": "1943c4852251b81353188a23340ddde425bb93e8",
+              "subject": "manifest: Remove project removal directives"
+            }
+          ]
+        },
+        {
+          "old": "a80785ee257684a7d5d05a4aefb657e25c4fecc7",
+          "new": "10fe415c0072ade9e93d16683c44c5340c2639c8",
+          "parts": [
+            {
+              "commit": "10fe415c0072ade9e93d16683c44c5340c2639c8",
+              "subject": "manifest: Record M2468 JIIOV source integration"
+            }
+          ]
+        },
+        {
+          "old": "523548b76443d378d16c28d8614b67f650eee917",
+          "new": "d86fde5be29a52c108892d2825bd4ebf86d32d7e",
+          "parts": [
+            {
+              "commit": "d86fde5be29a52c108892d2825bd4ebf86d32d7e",
+              "subject": "manifest: Record the JIIOV Kbuild wrapper fix"
+            }
+          ]
+        },
+        {
+          "old": "2c7bbda8a380d86e6ca5e503b2b814fe1ef6075f",
+          "new": "485885ad0aa5ea62c5c397851a779ccf88b5427d",
+          "parts": [
+            {
+              "commit": "485885ad0aa5ea62c5c397851a779ccf88b5427d",
+              "subject": "manifest: Record M2468 local HBM fixes"
+            }
+          ]
+        },
+        {
+          "old": "171cefb3b0107126270ab1de444e8c1465baeee8",
+          "new": "1d8b6a3c0fc2e80981402e7012b66af0f729247b",
+          "parts": [
+            {
+              "commit": "1d8b6a3c0fc2e80981402e7012b66af0f729247b",
+              "subject": "manifest: Record M2468 PM8008 camera regulator integration"
+            }
+          ]
+        },
+        {
+          "old": "e91021584d40e96bb44ed7908dea6c3eb5b30b87",
+          "new": "55f4d81eb45124aad31cee8666cdb3a6c9fcb173",
+          "parts": [
+            {
+              "commit": "55f4d81eb45124aad31cee8666cdb3a6c9fcb173",
+              "subject": "manifest: Record M2468 touch coordinate and flash fixes"
+            }
+          ]
+        },
+        {
+          "old": "c673de617c1a751f3fe5a8611e2a5eafdde9c7de",
+          "new": "09463e4f4111e40abcda6e0a13a00f99c7d34ea7",
+          "parts": [
+            {
+              "commit": "09463e4f4111e40abcda6e0a13a00f99c7d34ea7",
+              "subject": "manifest: Record the M2468 BoardConfig consolidation"
+            }
+          ]
+        },
+        {
+          "old": "5efcba3cc95c314c894405fb9169e9b337653b7e",
+          "new": "60e75e2b406785a0f53ac6c7a7aa27408b776fdb",
+          "parts": [
+            {
+              "commit": "60e75e2b406785a0f53ac6c7a7aa27408b776fdb",
+              "subject": "manifest: Record the M2468 default report rate fix"
+            }
+          ]
+        },
+        {
+          "old": "368958f56bf195993f5ed9ad6d2e5071fa9d3085",
+          "new": "3e1d0242a24767d00766c087e3741682a055a2da",
+          "parts": [
+            {
+              "commit": "3e1d0242a24767d00766c087e3741682a055a2da",
+              "subject": "manifest: Record M2468 haptics fixes"
+            }
+          ]
+        },
+        {
+          "old": "416e7d7f113ce5db76b49f70f18671cf25a848ad",
+          "new": "47c27d7e289cf8f95032a97bf887a297921112b2",
+          "parts": [
+            {
+              "commit": "47c27d7e289cf8f95032a97bf887a297921112b2",
+              "subject": "manifest: Record the M2468 backlight fix"
+            }
+          ]
+        },
+        {
+          "old": "79a74c9902c5dd6867189d32dac4167e8eeafd86",
+          "new": "8e6625e7241b98019ff9e63e6acdfeca5ff5a250",
+          "parts": [
+            {
+              "commit": "8e6625e7241b98019ff9e63e6acdfeca5ff5a250",
+              "subject": "manifest: Record the M2468 TE mux fix"
+            }
+          ]
+        },
+        {
+          "old": "c00e9e6e15d16919b400156658b577990729be3e",
+          "new": "1b8da0000c0dd19c7120fe19b6b2eb96e3fe3f6a",
+          "parts": [
+            {
+              "commit": "1b8da0000c0dd19c7120fe19b6b2eb96e3fe3f6a",
+              "subject": "manifest: Record M2468 backlight wake and boot fixes"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,54 +1,23 @@
-# Meizu 21 Note（M2468）内核源码清单
+# meizu-sm8550-kernel
 
-## 2026-10-07：M2468 触控坐标转换已下沉驱动
+**当前仅支持 m2468（魅族 21 Note）**，平台为 Qualcomm SM8550 / Kalama。`sm8550` 是平台名称，不表示已适配其它魅族 SM8550 设备；M2481（魅族 21 Pro）不在此项目支持范围内。
 
-用户已确认指纹、相机和闪光灯问题修复；后续闪光灯源码 modules `379f46f`、device `ba7f35c` 保留。最新触控提交 modules `e734482` 在 M2468 MP 的 Goodix 输入出口将 X/Y 除以10，保持1264×2780轴范围及其它板型行为，不新增手势或伪造UI-ready。本地编译、127项CRC、CFI/ThinLTO及手指上报回归通过；无ADB，尚未实机验证本次触控修复。
+本仓库提供 Android 源码树的本地清单，统一同步设备配置、内核、外置驱动和设备树源码。源码分支为 `lineage-23.2`，内核基线为 Android 13 / Linux 5.15.211 / KMI generation 8。源码分支名与内核版本分别管理。
 
-**使用此驱动的ROM必须移除 `0001-Fix-touch-on-Meizu-21-Note.patch`，避免输入框架与驱动重复缩放。** 已具备前述修复的服务器仅同步：
+## 仓库布局
 
-```sh
-repo sync -c kernel/meizu/sm8550-modules
-mka bacon
-```
+| 仓库 | ROM 源码树路径 |
+| --- | --- |
+| [android_kernel_meizu_sm8550](https://github.com/meizu-sm8550-kernel/android_kernel_meizu_sm8550) | `kernel/meizu/sm8550` |
+| [android_kernel_meizu_sm8550-modules](https://github.com/meizu-sm8550-kernel/android_kernel_meizu_sm8550-modules) | `kernel/meizu/sm8550-modules` |
+| [android_kernel_meizu_sm8550-devicetrees](https://github.com/meizu-sm8550-kernel/android_kernel_meizu_sm8550-devicetrees) | `kernel/meizu/sm8550-devicetrees` |
+| [android_device_meizu_m2468](https://github.com/meizu-sm8550-kernel/android_device_meizu_m2468) | `device/meizu/m2468` |
 
-保留out、默认Clang和现有XML；由用户自行更新镜像，人工验证全屏点击/拖动、多点、亮灭屏恢复及指纹。审计锁已补齐闪光灯和本次触控提交，XML继续只添加四个项目并跟随lineage-23.2，未固定项目SHA。
+组织不提供设备 dump、闭源固件、用户空间 blobs 或原厂内核二进制。构建仍需配套 ROM 源码及已有的 `vendor/meizu/m2468` 等依赖。
 
-下面为相机供应者等历史发布说明，不覆盖以上最新状态。
+## 同步和构建
 
----
-
-2026-10-07 相机更新：启用现有 `qcom_pm8008-regulator` 驱动并在第二阶段显式加载。M2468 的 I²C PMIC 父设备已绑定，但此前缺少 chip/LDO 子驱动，阻止相机组件完成绑定和创建 `/sys/kernel/camera/subparts_info`，CamX 在硬件信息初始化阶段中止。保留原 DT、电压、camera 源码及全部已有修复。
-
-kernel `36e5dfaa9e5ef70adda20698bd4a6949459f2ec0` 与 device `dfb6a9fdb6acf9f378868695d4958978d528fee5` 是同一供应缺口的配套提交。modules 仍为 `6da11be`，DT 仍为 `0f39552`。本地只增量编译 PM8008，34项导入CRC、CFI/ThinLTO通过；新选择388项，在HBM387上仅新增该模块，原386基线保持。候选未加载，provider稳定、相机枚举、预览、拍照和录像尚待新镜像验证。
-
-已有配套 ROM 的服务器执行：
-
-```sh
-repo sync -c kernel/meizu/sm8550 device/meizu/m2468
-mka bacon
-```
-
-保留 out、ROM 默认 Clang 和现有 XML，由用户自行更新配套镜像。先检查 PM8008 两个子驱动绑定与七路电源、相机组件和 provider，再人工验证前后摄预览、切换、拍照保存及录像。不能用编译或模块加载证明成像正常。
-
-用户已在本轮之前确认指纹/HBM问题修好；下方旧轮“尚未上机”描述按历史时间保留，不覆盖这次用户确认。
-
-2026-10-06 HBM 更新：显示源码修复了已知关闭状态下重复写7仍被模式校验拒绝的问题，并将 M2468 144/90Hz 的局部 HBM 与该模式不存在的 ADFR 命令分离。局部命令仍真实发送并检查错误，未使用其它模式的 ADFR 表；显式 minfps 请求在这两种模式仍返回不支持。原 framework 触摸门控和硬件 ready 握手保留。
-
-对应 modules 提交为 `a5b8392d437efeaba47913710c66195730a5a1ba`、`6da11bef24cd1562f76ce92e3c083a99899d8c6c`。独立显示候选通过本地编译、737项导入CRC和故障回归，原386基线和JIIOV/WLAN候选保持；新387选择只替换显示模块。新HBM候选尚未实机验证，静止画面TE活性及完整AOD仍未闭合。已有配套ROM的服务器仅需 `repo sync -c kernel/meizu/sm8550-modules` 后 `mka bacon`，保留out、默认Clang及现有XML，由用户自行更新配套镜像。
-
-下方第五轮“尚未上机”保留当时状态；后续只读现场已确认JIIOV加载、平台绑定和HAL初始化属性成功，但不能由此推导校准、HBM或录入解锁已成功。
-
-为**官方 LineageOS 23.2 源码树**提供 M2468 设备树、内核、外部驱动和 DTS 的 `repo` 本地清单。同步后由 Lineage 的标准构建规则从源码编译，不需要本机接入包、`prepare_layout.py` 或服务器信息采集步骤。
-
-当前是源码 bring-up：原386模块基线和六份M2468 DT保留；新增JIIOV及配套WLAN替换候选后，选择库存为387项。既有镜像已进入系统，用户确认ESD、bark、Wi-Fi基本使用和启动提速。观察的ROM为LineageOS24.0 / Android17，不是官方23.2整ROM验证。
-
-2026-10-06 最新：JIIOV必要驱动已源码实现，精确ioctl、供电/IRQ生命周期与netlink30/port100均按M2468审计；仅M2468构建关闭WLAN无收发逻辑的Cesium占位socket，解除协议冲突。候选通过本地编译、CRC和接口回归，尚未上机。模块加载、probe、/dev/jiiov_fp、HAL/TEE、HBM、录入和解锁均待分别验证；新WLAN候选亦需实机回归。
-
-已有此分支跟随XML的服务器，在现有ROM根目录执行 `repo sync -c kernel/meizu/sm8550-modules device/meizu/m2468` 后 `mka bacon`。无需重新下载同内容XML、清理out或更改ROM默认Clang。用户自行更新配套镜像后再验证候选。
-
-## 服务器同步和编译
-
-在已有的官方 `lineage-23.2` 源码树根目录执行。服务器已有的 `vendor/meizu/m2468` 等 vendor blobs 和其余 ROM 依赖继续使用；本组织不提供 dump、闭源 blobs 或预编译设备内核。
+在已有的 LineageOS 23.2 源码树根目录安装清单：
 
 ```bash
 mkdir -p .repo/local_manifests
@@ -61,85 +30,42 @@ breakfast m2468 userdebug
 mka kernel dtboimage bootimage vendorbootimage vendor_dlkmimage system_dlkmimage
 ```
 
-构建完整 ROM 使用同一个已选择的产品：
+构建完整 ROM 使用同一已选择的产品执行 `mka bacon`。默认产物目录为 `out/target/product/m2468/`，自定义 `OUT_DIR` 时以 `$OUT` 为准。内核沿用 ROM 默认 Clang，不设置设备专用 Clang 版本，也不额外同步编译器。
 
-```bash
-mka bacon
-```
+这些是已有构建入口；本地未完成整 ROM 编译验证。此前用户设备运行的是 LineageOS 24.0 / Android 17，不应据此声称验证了官方 LineageOS 23.2 整 ROM。
 
-标准产物目录是 `out/target/product/m2468/`，使用自定义 `OUT_DIR` 时以 `$OUT` 为准。上述命令是构建入口，尚未以完整服务器构建验证全部产物。不要把模块和 DTS 编译通过理解成可正常开机或可日用。
+## 清单行为
 
-`breakfast m2468 userdebug` 会读取当前树的 `vendor/lineage/vars/aosp_target_release`，再调用三段式 `lunch`。不在命令中硬编码 release 名称。构建入口依据官方 [envsetup.sh](https://github.com/LineageOS/android_vendor_lineage/blob/686d8669737d2207208ea21075320840b5ec8463/build/envsetup.sh)、[kernel.mk](https://github.com/LineageOS/android_vendor_lineage/blob/686d8669737d2207208ea21075320840b5ec8463/build/tasks/kernel.mk) 和 [core/main.mk](https://github.com/LineageOS/android_build/blob/e5aaa62172df0f321e68133fa30f42316376bfe8/core/main.mk)。
+`local_manifest.xml` 通过专用 remote 跟随 `refs/heads/lineage-23.2`。四个 project 不固定 SHA，不继承 ROM 主清单的分支，也不包含 `remove-project`。
 
-若服务器尚无 ROM 源码树，先按 [LineageOS 官方清单说明](https://github.com/LineageOS/android/tree/lineage-23.2) 在空目录初始化，再执行上面的本地清单同步步骤：
+`pinned.xml` 是同内容的兼容入口，名称虽保留，当前也跟随分支。两个入口只安装其中一个。相同源码路径应只声明一次；其它清单重复声明时需先整理冲突。
 
-```bash
-repo init -u https://github.com/LineageOS/android.git -b lineage-23.2 --git-lfs
-```
-
-本仓库只是本地清单覆盖层，不能替代官方 ROM manifest；只同步本仓库列出的项目不会得到完整 ROM 源码或 vendor blobs。
-
-## 清单范围
-
-| 仓库 | ROM 源码树路径 |
-| --- | --- |
-| `android_kernel_meizu_sm8550` | `kernel/meizu/sm8550` |
-| `android_kernel_meizu_sm8550-modules` | `kernel/meizu/sm8550-modules` |
-| `android_kernel_meizu_sm8550-devicetrees` | `kernel/meizu/sm8550-devicetrees` |
-| `android_device_meizu_m2468` | `device/meizu/m2468` |
-
-前四个仓库的当前默认分支均为 `lineage-23.2`。`local_manifest.xml` 跟随该分支的最新提交，项目上不指定 revision，也不固定提交 SHA；专用 remote 统一指定 `refs/heads/lineage-23.2`，避免继承 ROM 主清单的 `avium-16.2` 或其它分支。每次 `repo sync -c` 都同步该源码分支最新提交。
-
-旧下载地址 `pinned.xml` 保留为 `local_manifest.xml` 的同内容兼容入口，**现在也不锁定提交**。两者安装到同一个 `.repo/local_manifests/zzzz-meizu-m2468.xml`，不要重复安装。`revisions.lock.json` 仅记录某次发布的 SHA 用于审计，不控制 repo 同步版本。
-
-清单只添加表中四个源码项目，不含任何 `remove-project`。其它清单声明的项目保持原样，包括 `vendor/meizu/m2468`、其它设备项目、ROM 默认 Clang，以及可能存在的旧 prebuilt 或独立 Clang 项目。
-
-四个源码路径应各声明一次。若主清单或另一份 local manifest 已声明相同路径，Repo 会报告 `duplicate path`；应将已有声明整理为一个入口。本清单不会自动覆盖或移除它们，XML 文件排序也不能消除重复声明。
-
-这些行为已对照 [Repo 官方 manifest 格式](https://gerrit.googlesource.com/git-repo/+/7bba4ee47e72ccfe7838b62869029e2f7436ce39/docs/manifest-format.md) 和实际解析器验证：正常添加、保留不同路径的旧项目、相同名字位于其它路径、主清单和本地清单的重复路径报错。两个入口各覆盖三种 ROM 分支、四种布局，共24组场景。
-
-## 版本和工具链
-
-ROM 构建规则以官方 **LineageOS 23.2** 为基准。内核源码基线来自 LineageOS SM8550 的 **`lineage-21` / Android 13 / Linux 5.15.211 / KMI generation 8**；仓库的发布分支名不代表内核已升级到与 ROM 同代的 Android 内核。上游提交和已核对的 ROM 构建规则提交见 [upstream.lock.json](upstream.lock.json)。
-
-内核编译器使用 LineageOS 平台默认选择。设备树不设置 `TARGET_KERNEL_CLANG_VERSION` 或 `TARGET_KERNEL_CLANG_PATH`，官方规则使用 `LLVM_AOSP_PREBUILTS_VERSION` 与 ROM 自带的 `prebuilts/clang/host/linux-x86`。
-
-本清单不声明额外 Clang 仓库，也不移除其它清单可能声明的 Clang 项目。内核继续使用 ROM 默认工具链。
-
-两个 XML 均不固定提交 SHA。需要记录一次服务器实际同步到的完整构建输入，可在同步后运行：
+[revisions.lock.json](revisions.lock.json) 记录发布时的四个源码 SHA，仅用于追溯，不控制 `repo sync`。需要记录某次实际构建输入，可在同步后执行：
 
 ```bash
 repo manifest -r -o m2468-build-manifest.xml
 ```
 
-## 已验证内容与功能缺口
+## 适配与验证范围
 
-- 本地原386模块基线保留；新选择库存387项，独立候选验证84项JIIOV和518项WLAN导入CRC，保留CFI/MODVERSIONS。库存与编译不证明模块加载、DT供应者、固件或HAL成功。
-- M2468 的 1 个 DTB、5 个 DTBO 由源码经内核 Kbuild/dtc 构建。DTS 包含从该机原厂 DT 重建的字节属性；这是可构建的重建源码，不是原厂维护的带标签 DTS，也不代表设备语义全部恢复。
-- 显示和 Goodix 触控包含针对 M2468 的源码适配。HBM 只实现受限亮屏路径；FOD/AOD、黑屏切换及完整指纹联动没有完成运行验证。
-- `jiiov_fingerprint`已补源码候选，配套设备配置增加第二阶段加载、专用节点标签及HAL ioctl权限；尚未实机验证。充电、温控、启动和其它OEM模块仍有缺口。
-- 已确认上述设备完成启动；未在本地验证完整 ROM 构建，也未验证所有模块加载、外设和日常功能。已编译的模块数量不能作为整机兼容性结论。
+适配包含设备 DT、PM8008 供电、电源键复位预警、振动、显示与背光、Goodix 触控、CS35L43、JIIOV、闪光灯及 WLAN 配套修改。已有启动和部分外设的用户反馈；这不代表全部场景和外设均验证通过。
 
-## 来源与许可
+本次提交整理保持既有功能，主机回归覆盖背光、触控、振动和指纹，清单使用真实 Repo 解析器检查。完整 AOD、各显示模式、音频及其它 OEM 行为仍需分别进行设备验证。此前各轮结果与限制保存在 [历史记录](docs/m2468-bringup-history.md)，上游来源见 [upstream.lock.json](upstream.lock.json)。
 
-内核、外部模块和平台 DTS 基于公开的 LineageOS/QCOM SM8550 仓库；设备树基于 [AstralSpun/android_device_meizu_m2468](https://cnb.cool/AstralSpun/android_device_meizu_m2468)。M2468 显示/触控适配是在公开源码上重写兼容接口，参考该型号的 DT 和原厂接口行为；不是恢复出魅族原始 C 源码。各源码仓库保留其上游许可、版权声明和来源记录。
+包含坐标缩放的 Goodix 驱动要求 ROM 移除旧 inputflinger 除以 10 的补丁，避免重复缩放。原补丁文件名 `0001-Fix-touch-on-Meizu-21-Note.patch` 仅作为历史引用保留。
 
-本 manifest 仓库中的清单、脚本和文档使用 Apache-2.0，见 [LICENSE](LICENSE)。这不改变被引用源码、AOSP 工具链或设备固件各自的许可。本组织不再分发设备 dump、闭源固件、用户空间 blobs 或原厂内核二进制。
+## 提交和设备命名
 
-## 维护发布记录
+设备路径、配置和新代码使用 `m2468` / `M2468`，提交按子系统组织，标题使用首字母大写的动作描述，详见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
-维护者在源码提交发布后更新审计记录；脚本保留旧名称以兼容维护流程，但不再生成提交固定清单。正常服务器构建不需要运行此脚本：
+2026-10-10 已重整下游适配历史，旧新提交对应关系见 [commit map](history/2026-10-10-commit-map.json)。五个仓库均保留 `archive/m2468-before-cleanup-20261010` 恢复分支。上游提交未重写。
 
-```bash
-python3 pin_revisions.py --repos-dir ..
-```
+已有源码 checkout 的提交号会改变。如果同步报告历史分叉，先保存自己的提交和未提交修改，再将本地分支迁移到新的 `origin/lineage-23.2`；不要将旧适配系列合并回新历史。本次没有修改 XML 内容，无需重新下载清单。
 
-该目录需包含表中的四个完整仓库名，且都在干净的 `lineage-23.2` 分支。也可用 `--revisions /path/to/revisions.json` 输入 JSON 对象，四个键为仓库名、值为真实的完整 40 位提交 SHA。源码提交推送后，服务器普通 `repo sync -c` 即可取得更新，无需为每个新 SHA 重新下载 XML。维护者仍更新 `revisions.lock.json` 中的发布记录；脚本同时保持两个 XML 入口同内容，不会恢复项目 revision，并拒绝含 `remove-project` 的输入。不要填入占位 SHA。
+## 维护审计记录
 
-可选的 `verify_manifest.py --repo-source /path/to/git-repo` 使用官方 Repo 解析器做离线组合检查，不执行 sync、不修改服务器源码，也不是构建前置步骤。
+源码发布后，维护者可执行 `python3 pin_revisions.py --repos-dir ..`；该目录应包含四个完整仓库名，且位于干净的 `lineage-23.2` 分支。也可用 `--revisions /path/to/revisions.json` 提供仓库名到完整 SHA 的对象。
 
-2026-10-06 音频更新：新增源码 CS35L43 功放模块，并按 M2468 原厂接口修正 TX3/TX4 与 secondary MI2S 双功放链路；设备 vendor 加载清单同步更新。公开源码不包含原厂模块或调音固件。新候选须由用户构建并验证，编译/CRC 检查不代表已解决全部启动问题。
+`python3 verify_manifest.py --repo-source /path/to/git-repo` 使用官方 Repo 解析器执行离线组合检查。它不执行同步，也不是正常构建的前置步骤。
 
-2026-10-06 首轮黑屏修复：按 M2468 原厂接口补齐 ILI7838E ESD 分页读取和状态判定，保留异常恢复。用户更新后反馈黑闪消失，后续只读采样的保留日志中未见原 ESD 错误或 PANEL_DEAD；这不代表所有显示场景均已验证。
-
-2026-10-06 第二轮按键修复：内核驱动为 M2468 的 `qcom,use-bark` 节点恢复独立中断处理和上升沿，不再通过普通按键路径生成虚假 KEY_POWER；probe 与恢复路径使用同一分派。普通电源键/音量下、DT 和 PMIC 复位配置保持。通过真实 C 路径回归及复用既有基础产物的单模块编译、CRC/CFI 检查，候选尚未上机；熄屏、实体按键、负载及长按复位仍待验证。原厂长按复位前的显示关闭回调未恢复，WLAN 等其它问题未由此修复。
+清单、脚本和本仓库文档采用 [Apache-2.0](LICENSE)；各源码仓库保留上游许可和版权声明。
